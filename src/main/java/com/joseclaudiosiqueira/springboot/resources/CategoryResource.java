@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value="/categories")
 public class CategoryResource {
 	@RequestMapping(method=RequestMethod.GET)
-	public String listar() {
-		return "REST está funcionando";
+	public String list() {
+		return "The REST is already!";
 	}
 }
