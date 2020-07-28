@@ -1,4 +1,4 @@
-package com.joseclaudio.springboot;
+package com.joseclaudiosiqueira.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
