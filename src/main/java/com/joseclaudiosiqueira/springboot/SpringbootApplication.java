@@ -7,12 +7,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.joseclaudiosiqueira.springboot.domain.Address;
 import com.joseclaudiosiqueira.springboot.domain.Category;
 import com.joseclaudiosiqueira.springboot.domain.City;
+import com.joseclaudiosiqueira.springboot.domain.Client;
 import com.joseclaudiosiqueira.springboot.domain.Product;
 import com.joseclaudiosiqueira.springboot.domain.State;
+import com.joseclaudiosiqueira.springboot.domain.enums.ClientType;
+import com.joseclaudiosiqueira.springboot.repositories.AddressRepository;
 import com.joseclaudiosiqueira.springboot.repositories.CategoryRepository;
 import com.joseclaudiosiqueira.springboot.repositories.CityRepository;
+import com.joseclaudiosiqueira.springboot.repositories.ClientRepository;
 import com.joseclaudiosiqueira.springboot.repositories.ProductRepository;
 import com.joseclaudiosiqueira.springboot.repositories.StateRepository;
 
@@ -27,6 +32,10 @@ public class SpringbootApplication implements CommandLineRunner {
 	private StateRepository stateRepository;
 	@Autowired
 	private CityRepository cityRepository;
+	@Autowired
+	private ClientRepository clientRepository;
+	@Autowired
+	private AddressRepository addressRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootApplication.class, args);
@@ -76,6 +85,21 @@ public class SpringbootApplication implements CommandLineRunner {
 		stateRepository.saveAll(Arrays.asList(state1, state2));
 		cityRepository.saveAll(Arrays.asList(city1, city2, city3));
 
+		/*
+		 * Association between clients, addresses and cities
+		 */
+		Client client1 = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", ClientType.NATURALPERSON);
+
+		client1.getPhoneNumbers().addAll(Arrays.asList("27363323", "93838393"));
+
+		Address address1 = new Address(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", client1, city1);
+		Address address2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", client1, city2);
+
+		client1.getAddresses().addAll(Arrays.asList(address1, address2));
+		
+		clientRepository.saveAll(Arrays.asList(client1));
+		addressRepository.saveAll(Arrays.asList(address1, address2));
+		
 	}
 
 }
