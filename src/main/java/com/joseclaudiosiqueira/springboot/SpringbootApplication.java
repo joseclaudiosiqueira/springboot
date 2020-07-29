@@ -54,7 +54,7 @@ public class SpringbootApplication implements CommandLineRunner {
 		category1.getProducts().addAll(Arrays.asList(product1, product2, product3));
 		category2.getProducts().addAll(Arrays.asList(product2));
 		/*
-		 * Association between produtcs and categories
+		 * Association between products and categories
 		 */
 		product1.getCategories().addAll(Arrays.asList(category1));
 		product2.getCategories().addAll(Arrays.asList(category1, category2));

@@ -40,7 +40,10 @@ public class Client implements Serializable {
 
 	public Client() {
 	}
-
+	/*
+	 * Don't include collections in the constructor that is using fields
+	 * In this case, don't include addresses and phoneNumbers
+	 */
 	public Client(Integer id, String name, String email, String cpfOrCnpj, ClientType type) {
 		super();
 		this.id = id;
