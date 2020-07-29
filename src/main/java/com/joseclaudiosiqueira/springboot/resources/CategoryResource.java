@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.joseclaudiosiqueira.springboot.domain.Category;
 import com.joseclaudiosiqueira.springboot.services.CategoryService;
+import com.joseclaudiosiqueira.springboot.services.exceptions.ObjectNotFoundException;
 
 @RestController
 @RequestMapping(value = "/categories")
@@ -18,7 +19,7 @@ public class CategoryResource {
 	private CategoryService service;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> search(@PathVariable Integer id) {
+	public ResponseEntity<?> search(@PathVariable Integer id) throws ObjectNotFoundException {
 		Category object = service.search(id);
 		return ResponseEntity.ok(object);
 	}
