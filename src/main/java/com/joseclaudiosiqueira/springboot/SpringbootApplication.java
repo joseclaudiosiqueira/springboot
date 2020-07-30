@@ -15,6 +15,7 @@ import com.joseclaudiosiqueira.springboot.domain.Category;
 import com.joseclaudiosiqueira.springboot.domain.City;
 import com.joseclaudiosiqueira.springboot.domain.Client;
 import com.joseclaudiosiqueira.springboot.domain.Order;
+import com.joseclaudiosiqueira.springboot.domain.OrderItem;
 import com.joseclaudiosiqueira.springboot.domain.Payment;
 import com.joseclaudiosiqueira.springboot.domain.Product;
 import com.joseclaudiosiqueira.springboot.domain.State;
@@ -24,6 +25,7 @@ import com.joseclaudiosiqueira.springboot.repositories.AddressRepository;
 import com.joseclaudiosiqueira.springboot.repositories.CategoryRepository;
 import com.joseclaudiosiqueira.springboot.repositories.CityRepository;
 import com.joseclaudiosiqueira.springboot.repositories.ClientRepository;
+import com.joseclaudiosiqueira.springboot.repositories.OrderItemRepository;
 import com.joseclaudiosiqueira.springboot.repositories.OrderRepository;
 import com.joseclaudiosiqueira.springboot.repositories.PaymentRepository;
 import com.joseclaudiosiqueira.springboot.repositories.ProductRepository;
@@ -48,6 +50,8 @@ public class SpringbootApplication implements CommandLineRunner {
 	private OrderRepository orderRepository;
 	@Autowired
 	private PaymentRepository paymentRepository;
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootApplication.class, args);
@@ -119,19 +123,31 @@ public class SpringbootApplication implements CommandLineRunner {
 
 		Order order1 = new Order(null, simpleDateFormat.parse("30/09/2017 10:32"), client1, address1);
 		Order order2 = new Order(null, simpleDateFormat.parse("10/10/2017 19:35"), client1, address2);
-		
+
 		Payment payment1 = new CardPayment(null, PaymentState.PAIDOUT, order1, 6);
-		Payment payment2 = new BilletPayment(null, PaymentState.PENDING, order2, simpleDateFormat.parse("20/10/2017 00:00"),null);
-		
+		Payment payment2 = new BilletPayment(null, PaymentState.PENDING, order2,
+				simpleDateFormat.parse("20/10/2017 00:00"), null);
+
 		order1.setPayment(payment1);
 		order2.setPayment(payment2);
-		
+
 		client1.getOrders().addAll(Arrays.asList(order1, order2));
-		
+
 		orderRepository.saveAll(Arrays.asList(order1, order2));
 		paymentRepository.saveAll(Arrays.asList(payment1, payment2));
+
+		OrderItem orderItem1 = new OrderItem(order1, product1, 0.00, 1, 2000.00);
+		OrderItem orderItem2 = new OrderItem(order1, product2, 0.00, 2, 80.00);
+		OrderItem orderItem3 = new OrderItem(order2, product2, 100.00, 1, 800.00);
 		
+		order1.getItems().addAll(Arrays.asList(orderItem1, orderItem2));
+		order2.getItems().addAll(Arrays.asList(orderItem3));
 		
+		product1.getItems().addAll(Arrays.asList(orderItem1));
+		product2.getItems().addAll(Arrays.asList(orderItem3));
+		product3.getItems().addAll(Arrays.asList(orderItem2));
+
+		orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2, orderItem3));
 	}
 
 }

@@ -2,7 +2,9 @@ package com.joseclaudiosiqueira.springboot.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,31 +13,33 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="products")
+@Table(name = "products")
 public class Product implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 	private Double price;
-	
+
 	@JsonBackReference
 	@ManyToMany
-	@JoinTable(name="PRODUCT_CATEGORY",
-			joinColumns = @JoinColumn(name="product_id"),
-			inverseJoinColumns = @JoinColumn(name="category_id"))
+	@JoinTable(name = "PRODUCT_CATEGORY", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private List<Category> categories = new ArrayList<>();
-	
+
+	@OneToMany(mappedBy="id.product")
+	private Set<OrderItem> items = new HashSet<>();
+
 	public Product() {
-		
+
 	}
 
 	public Product(Integer id, String name, Double price) {
@@ -43,6 +47,14 @@ public class Product implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.price = price;
+	}
+
+	public List<Order> getOrders() {
+		List<Order> list = new ArrayList<>();
+		for (OrderItem x : items) {
+			list.add(x.getOrder());
+		}
+		return list;
 	}
 
 	public Integer getId() {
@@ -77,6 +89,14 @@ public class Product implements Serializable {
 		this.categories = categories;
 	}
 
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<OrderItem> items) {
+		this.items = items;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -101,5 +121,5 @@ public class Product implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 }

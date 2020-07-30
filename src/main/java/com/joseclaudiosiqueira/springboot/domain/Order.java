@@ -2,6 +2,8 @@ package com.joseclaudiosiqueira.springboot.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,32 +22,35 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * renaming "order" table to "orders" because order is a reserved word in SQL 
  */
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date orderDate;
 
 	/*
-	 * Because payment not exists alone, 
-	 * this attribute is not required at instantiation of the class
+	 * Because payment not exists alone, this attribute is not required at
+	 * instantiation of the class
 	 */
-	@OneToOne(cascade=CascadeType.ALL, mappedBy="order")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
 	private Payment payment;
 
 	@ManyToOne
-	@JoinColumn(name="client_id")
+	@JoinColumn(name = "client_id")
 	private Client client;
 
 	@ManyToOne
-	@JoinColumn(name="delivery_address_id")
+	@JoinColumn(name = "delivery_address_id")
 	private Address deliveryAddress;
+
+	@OneToMany(mappedBy="id.order")
+	private Set<OrderItem> items = new HashSet<>();
 
 	public Order() {
 	}
@@ -95,6 +101,14 @@ public class Order implements Serializable {
 
 	public void setDeliveryAddress(Address deliveryAddress) {
 		this.deliveryAddress = deliveryAddress;
+	}
+
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<OrderItem> items) {
+		this.items = items;
 	}
 
 	@Override
