@@ -31,6 +31,10 @@ public class Order implements Serializable {
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date orderDate;
 
+	/*
+	 * Because payment not exists alone, 
+	 * this attribute is not required at instantiation of the class
+	 */
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="order")
 	private Payment payment;
 
@@ -45,11 +49,10 @@ public class Order implements Serializable {
 	public Order() {
 	}
 
-	public Order(Integer id, Date orderDate, Payment payment, Client client, Address deliveryAddress) {
+	public Order(Integer id, Date orderDate, Client client, Address deliveryAddress) {
 		super();
 		this.id = id;
 		this.orderDate = orderDate;
-		this.payment = payment;
 		this.client = client;
 		this.deliveryAddress = deliveryAddress;
 	}
