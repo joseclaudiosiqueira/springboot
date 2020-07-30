@@ -13,17 +13,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.joseclaudiosiqueira.springboot.domain.enums.ClientType;
 
 @Entity
+@Table(name="clients")
 public class Client implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 	private String email;
@@ -31,18 +33,22 @@ public class Client implements Serializable {
 	private Integer type;
 
 	@JsonManagedReference
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy = "client")
 	private List<Address> addresses = new ArrayList<>();
 
 	@ElementCollection
-	@CollectionTable(name="PHONE_NUMBERS")
+	@CollectionTable(name = "PHONE_NUMBERS")
 	private Set<String> phoneNumbers = new HashSet<>();
+
+	@OneToMany(mappedBy = "client")
+	private List<Order> orders = new ArrayList<>();
 
 	public Client() {
 	}
+
 	/*
-	 * Don't include collections in the constructor that is using fields
-	 * In this case, don't include addresses and phoneNumbers
+	 * Don't include collections in the constructor that is using fields In this
+	 * case, don't include addresses, phoneNumbers and Orders
 	 */
 	public Client(Integer id, String name, String email, String cpfOrCnpj, ClientType type) {
 		super();
@@ -107,6 +113,14 @@ public class Client implements Serializable {
 
 	public void setPhoneNumbers(Set<String> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 	@Override
