@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /*
  * renaming "order" table to "orders" because order is a reserved word in SQL 
@@ -38,17 +39,19 @@ public class Order implements Serializable {
 	 * Because payment not exists alone, this attribute is not required at
 	 * instantiation of the class
 	 */
+	@JsonManagedReference
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
 	private Payment payment;
-
+	
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private Client client;
-
-	@ManyToOne
+	
+	@OneToOne
 	@JoinColumn(name = "delivery_address_id")
 	private Address deliveryAddress;
-
+	
 	@OneToMany(mappedBy="id.order")
 	private Set<OrderItem> items = new HashSet<>();
 
