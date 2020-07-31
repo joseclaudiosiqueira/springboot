@@ -19,8 +19,8 @@ public class OrderResource {
 	private OrderService service;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> search(@PathVariable Integer id) throws ObjectNotFoundException {
-		Order object = service.search(id);
+	public ResponseEntity<Order> find(@PathVariable Integer id) throws ObjectNotFoundException {
+		Order object = service.find(id);
 		return ResponseEntity.ok(object);
 	}
 }
