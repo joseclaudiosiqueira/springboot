@@ -22,4 +22,9 @@ public class CategoryService {
 
 	}
 
+	public Category insert(Category category) {
+		category.setId(null);
+		return repository.save(category);
+	}
+
 }
