@@ -36,12 +36,18 @@ public class CategoryResource {
 
 		return ResponseEntity.created(location).build();
 	}
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Category category, @PathVariable Integer id){
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Category category, @PathVariable Integer id) {
 		category.setId(id);
 		category = service.update(category);
 		return ResponseEntity.noContent().build();
 	}
-	
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+
 }
