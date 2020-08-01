@@ -1,6 +1,8 @@
 package com.joseclaudiosiqueira.springboot.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.joseclaudiosiqueira.springboot.domain.Category;
+import com.joseclaudiosiqueira.springboot.dto.DTOCategory;
 import com.joseclaudiosiqueira.springboot.services.CategoryService;
 import com.joseclaudiosiqueira.springboot.services.exceptions.ObjectNotFoundException;
 
@@ -50,4 +53,11 @@ public class CategoryResource {
 		return ResponseEntity.noContent().build();
 	}
 
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<DTOCategory>> findAll() {
+		List<Category> categoryList = service.findAll();
+		List<DTOCategory> DTOCategoryList = categoryList.stream().map(object -> new DTOCategory(object))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok().body(DTOCategoryList);
+	}
 }
