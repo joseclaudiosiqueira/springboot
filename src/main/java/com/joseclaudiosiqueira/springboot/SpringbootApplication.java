@@ -62,6 +62,11 @@ public class SpringbootApplication implements CommandLineRunner {
 
 		Category category1 = new Category(null, "Informática");
 		Category category2 = new Category(null, "Escritório");
+		Category category3 = new Category(null, "Bed & Breakfest :-)");
+		Category category4 = new Category(null, "Electronics");
+		Category category5 = new Category(null, "Gardening");
+		Category category6 = new Category(null, "Ornament");
+		Category category7 = new Category(null, "Office");
 
 		Product product1 = new Product(null, "Computador", 2000.00);
 		Product product2 = new Product(null, "Impressora", 800.00);
@@ -79,7 +84,8 @@ public class SpringbootApplication implements CommandLineRunner {
 		/*
 		 * add to repositories
 		 */
-		categoryRepository.saveAll(Arrays.asList(category1, category2));
+		categoryRepository
+				.saveAll(Arrays.asList(category1, category2, category3, category4, category5, category6, category7));
 		productRepository.saveAll(Arrays.asList(product1, product2, product3));
 
 		/*
@@ -139,10 +145,10 @@ public class SpringbootApplication implements CommandLineRunner {
 		OrderItem orderItem1 = new OrderItem(order1, product1, 0.00, 1, 2000.00);
 		OrderItem orderItem2 = new OrderItem(order1, product2, 0.00, 2, 80.00);
 		OrderItem orderItem3 = new OrderItem(order2, product2, 100.00, 1, 800.00);
-		
+
 		order1.getItems().addAll(Arrays.asList(orderItem1, orderItem2));
 		order2.getItems().addAll(Arrays.asList(orderItem3));
-		
+
 		product1.getItems().addAll(Arrays.asList(orderItem1));
 		product2.getItems().addAll(Arrays.asList(orderItem3));
 		product3.getItems().addAll(Arrays.asList(orderItem2));
