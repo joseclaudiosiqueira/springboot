@@ -11,8 +11,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.joseclaudiosiqueira.springboot.domain.Address;
+import com.joseclaudiosiqueira.springboot.domain.City;
 import com.joseclaudiosiqueira.springboot.domain.Client;
+import com.joseclaudiosiqueira.springboot.domain.enums.ClientType;
 import com.joseclaudiosiqueira.springboot.dto.DTOClient;
+import com.joseclaudiosiqueira.springboot.dto.DTONewClient;
 import com.joseclaudiosiqueira.springboot.repositories.AddressRepository;
 import com.joseclaudiosiqueira.springboot.repositories.ClientRepository;
 import com.joseclaudiosiqueira.springboot.services.exceptions.DataIntegrityException;
@@ -32,7 +36,7 @@ public class ClientService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getName()));
 
 	}
-	
+
 	@Transactional
 	public Client insert(Client client) {
 		client.setId(null);
@@ -68,7 +72,24 @@ public class ClientService {
 	public Client fromDTO(DTOClient dtoClient) {
 		return new Client(dtoClient.getId(), dtoClient.getName(), dtoClient.getEmail(), null, null);
 	}
-	
+
+	public Client fromDTO(DTONewClient dtoNewClient) {
+		Client client = new Client(null, dtoNewClient.getName(), dtoNewClient.getEmail(), dtoNewClient.getCpfOrCnpj(),
+				ClientType.toEnum(dtoNewClient.getType()));
+		City city = new City(dtoNewClient.getCityId(), null, null);
+		Address address = new Address(null, dtoNewClient.getStreet(), dtoNewClient.getNumber(),
+				dtoNewClient.getComplement(), dtoNewClient.getNeighborhood(), dtoNewClient.getZipCode(), client, city);
+		client.getAddresses().add(address);
+		client.getPhoneNumbers().add(dtoNewClient.getTelephoneNumberOne());
+		if (dtoNewClient.getTelephoneNumberTwo() != null) {
+			client.getPhoneNumbers().add(dtoNewClient.getTelephoneNumberTwo());
+		}
+		if (dtoNewClient.getTelephoneNumberThree() != null) {
+			client.getPhoneNumbers().add(dtoNewClient.getTelephoneNumberThree());
+		}
+		return client;
+	}
+
 	private void updateClient(Client updatingClient, Client client) {
 		updatingClient.setName(client.getName());
 		updatingClient.setEmail(client.getEmail());

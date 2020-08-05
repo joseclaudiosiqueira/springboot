@@ -1,5 +1,6 @@
 package com.joseclaudiosiqueira.springboot.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.joseclaudiosiqueira.springboot.domain.Client;
 import com.joseclaudiosiqueira.springboot.dto.DTOClient;
+import com.joseclaudiosiqueira.springboot.dto.DTONewClient;
 import com.joseclaudiosiqueira.springboot.services.ClientService;
 import com.joseclaudiosiqueira.springboot.services.exceptions.ObjectNotFoundException;
 
@@ -32,6 +35,17 @@ public class ClientResource {
 		Client object = service.find(id);
 		return ResponseEntity.ok(object);
 	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody DTONewClient dtoNewClient) {
+		Client client = service.fromDTO(dtoNewClient);
+		client = service.insert(client);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId())
+				.toUri();
+
+		return ResponseEntity.created(location).build();
+	}	
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody DTOClient dtoClient, @PathVariable Integer id) {
 		Client category = service.fromDTO(dtoClient);
