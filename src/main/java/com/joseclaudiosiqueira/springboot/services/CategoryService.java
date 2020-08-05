@@ -35,8 +35,9 @@ public class CategoryService {
 	}
 
 	public Category update(Category category) {
-		find(category.getId());
-		return repository.save(category);
+		Category updatingCategory = find(category.getId());
+		updateCategory(updatingCategory, category);
+		return repository.save(updatingCategory);
 	}
 
 	public void delete(Integer id) {
@@ -59,5 +60,9 @@ public class CategoryService {
 
 	public Category fromDTO(DTOCategory dtoCategory) {
 		return new Category(dtoCategory.getId(), dtoCategory.getName());
+	}
+
+	private void updateCategory(Category updatingCategory, Category category) {
+		updatingCategory.setName(category.getName());
 	}
 }
