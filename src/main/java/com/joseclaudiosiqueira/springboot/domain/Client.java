@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.joseclaudiosiqueira.springboot.domain.enums.ClientType;
 
 @Entity
-@Table(name="clients")
+@Table(name = "clients")
 public class Client implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,7 +38,7 @@ public class Client implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "PHONE_NUMBERS")
 	private Set<String> phoneNumbers = new HashSet<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
@@ -56,7 +56,7 @@ public class Client implements Serializable {
 		this.name = name;
 		this.email = email;
 		this.cpfOrCnpj = cpfOrCnpj;
-		this.type = type.getCode();
+		this.type = (type == null ? null : type.getCode());
 	}
 
 	public Integer getId() {
