@@ -2,21 +2,46 @@ package com.joseclaudiosiqueira.springboot.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.joseclaudiosiqueira.springboot.services.validation.InsertClient;
+
+@InsertClient
 public class DTONewClient implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@NotEmpty(message = "Name is a required field")
+	@Length(min = 5, max = 120, message = "This field must have between five and one thousand and twenty characters")
 	private String name;
+
+	@NotEmpty(message = "Emais is a required field")
+	@Email(message = "Invalid email")
 	private String email;
+
+	@NotEmpty(message = "CPF / CNPJ is a required field")
 	private String cpfOrCnpj;
+
 	private Integer type;
 
+	@NotEmpty(message = "Street is a required field")
 	private String street;
+
+	@NotEmpty(message = "Number is a required field")
 	private String number;
+
 	private String complement;
 	private String neighborhood;
+
+	@NotEmpty(message = "Zipcode is a required field")
 	private String zipCode;
 
+	@NotEmpty(message = "Telephone (1) is a required field")
 	private String telephoneNumberOne;
+
 	private String telephoneNumberTwo;
 	private String telephoneNumberThree;
 
