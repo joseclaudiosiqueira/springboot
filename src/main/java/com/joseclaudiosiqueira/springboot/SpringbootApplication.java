@@ -71,22 +71,45 @@ public class SpringbootApplication implements CommandLineRunner {
 		Product product1 = new Product(null, "Computador", 2000.00);
 		Product product2 = new Product(null, "Impressora", 800.00);
 		Product product3 = new Product(null, "Mouse", 80.00);
+		Product product4 = new Product(null, "Office Desk", 300.00);
+		Product product5 = new Product(null, "Towel", 50.00);
+		Product product6 = new Product(null, "Bedspread", 200.00);
+		Product product7 = new Product(null, "Coloured TV", 1200.00);
+		Product product8 = new Product(null, "Brush Cutter", 800.00);
+		Product product9 = new Product(null, "Lampshade", 100.00);
+		Product product10 = new Product(null, "Light Fixture", 180.00);
+		Product product11 = new Product(null, "Shampoo", 90.00);
 
 		category1.getProducts().addAll(Arrays.asList(product1, product2, product3));
-		category2.getProducts().addAll(Arrays.asList(product2));
+		category2.getProducts().addAll(Arrays.asList(product2, product4));
+		category3.getProducts().addAll(Arrays.asList(product5, product6));
+		category4.getProducts().addAll(Arrays.asList(product1, product2, product3, product7));
+		category5.getProducts().addAll(Arrays.asList(product8));
+		category6.getProducts().addAll(Arrays.asList(product9, product10));
+		category7.getProducts().addAll(Arrays.asList(product11));
+
 		/*
 		 * Association between products and categories
 		 */
 		product1.getCategories().addAll(Arrays.asList(category1));
-		product2.getCategories().addAll(Arrays.asList(category1, category2));
-		product3.getCategories().addAll(Arrays.asList(category1));
+		product2.getCategories().addAll(Arrays.asList(category1, category2, category4));
+		product3.getCategories().addAll(Arrays.asList(category1, category4));
+		product4.getCategories().addAll(Arrays.asList(category2));
+		product5.getCategories().addAll(Arrays.asList(category3));
+		product6.getCategories().addAll(Arrays.asList(category3));
+		product7.getCategories().addAll(Arrays.asList(category4));
+		product8.getCategories().addAll(Arrays.asList(category5));
+		product9.getCategories().addAll(Arrays.asList(category6));
+		product10.getCategories().addAll(Arrays.asList(category6));
+		product11.getCategories().addAll(Arrays.asList(category7));
 
 		/*
 		 * add to repositories
 		 */
 		categoryRepository
 				.saveAll(Arrays.asList(category1, category2, category3, category4, category5, category6, category7));
-		productRepository.saveAll(Arrays.asList(product1, product2, product3));
+		productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5, product6, product7,
+				product8, product9, product10, product11));
 
 		/*
 		 * adding cities and states
